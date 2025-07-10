@@ -21,9 +21,7 @@ def login_for_access_token(
     db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """用户登录获取访问令牌"""
-    user_obj = user.authenticate(
-        db, username=form_data.username, password=form_data.password
-    )
+    user_obj = user.authenticate(db, username=form_data.username, password=form_data.password)
     if not user_obj:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -31,9 +29,7 @@ def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     elif not user.is_active(user_obj):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="用户未激活"
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="用户未激活")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user_obj.username}, expires_delta=access_token_expires

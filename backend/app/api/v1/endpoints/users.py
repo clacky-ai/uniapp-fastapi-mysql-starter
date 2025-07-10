@@ -75,7 +75,5 @@ def read_user_by_id(
     """根据ID获取用户信息"""
     user_obj = user.get(db, id=user_id)
     if not user_obj:
-        raise HTTPException(
-            status_code=404, detail="用户不存在"
-        )
+        raise HTTPException(status_code=404, detail="用户不存在")
     return user_obj

@@ -32,5 +32,5 @@ def get_dashboard_stats(db: Session = Depends(get_db)) -> Any:
         "total_posts": post_count,
         "published_posts": published_post_count,
         "system_status": "running",
-        "message": "系统运行正常"
+        "message": "系统运行正常",
     }

@@ -1,28 +1,10 @@
-[build-system]
-requires = ["setuptools>=45", "wheel"]
-build-backend = "setuptools.build_meta"
+# Ruff configuration file
+# https://docs.astral.sh/ruff/configuration/
 
-[project]
-name = "ecommerce-backend"
-version = "1.0.0"
-description = "FastAPI based ecommerce backend"
-dependencies = [
-    "fastapi",
-    "uvicorn",
-    "sqlalchemy",
-    "pymysql",
-    "pydantic",
-    "python-jose",
-    "passlib",
-    "python-multipart",
-    "sqladmin",
-]
-
-[tool.ruff]
 line-length = 100
 target-version = "py38"
 
-[tool.ruff.lint]
+[lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -38,10 +20,10 @@ ignore = [
     "C901",  # too complex
 ]
 
-[tool.ruff.lint.per-file-ignores]
+[lint.per-file-ignores]
 "__init__.py" = ["F401"]
 
-[tool.ruff.format]
+[format]
 quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false

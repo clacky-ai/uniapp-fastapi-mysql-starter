@@ -10,7 +10,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     debug=settings.DEBUG,
-    description="小程序开发脚手架后端API服务"
+    description="小程序开发脚手架后端API服务",
 )
 
 # 配置CORS
@@ -36,7 +36,7 @@ async def root():
         "message": "欢迎使用小程序开发脚手架API",
         "version": settings.APP_VERSION,
         "docs": "/docs",
-        "admin": "/admin"
+        "admin": "/admin",
     }
 
 
