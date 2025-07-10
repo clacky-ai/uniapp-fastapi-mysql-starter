@@ -1,0 +1,16 @@
+# Commands to run when "Run" button clicked
+run_command:
+  - 'cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload'
+  - 'cd frontend && npm run dev:h5'
+# Command to install or update dependencies, will execute each time a new thread created to ensure dependencies up-to-date
+dependency_command: '(cd backend && pip install -r requirements.txt); (cd frontend && npm install)'
+linter_config:
+  - config_path: 'backend/pyproject.toml'
+    type: 'ruff'
+    language: 'python'
+  - config_path: 'frontend/.eslintrc.js'
+    type: 'eslint'
+    language: 'javascript'
+  - config_path: 'frontend/tsconfig.json'
+    type: 'typescript'
+    language: 'typescript'

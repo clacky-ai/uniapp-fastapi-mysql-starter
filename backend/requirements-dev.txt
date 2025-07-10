@@ -1,0 +1,18 @@
+# Development dependencies
+-r requirements.txt
+
+# Linting and formatting
+ruff>=0.1.0
+black>=23.0.0
+mypy>=1.5.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+httpx>=0.24.0
+
+# Database management
+alembic>=1.12.0
+
+# Development tools
+watchdog>=3.0.0
