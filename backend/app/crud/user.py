@@ -48,9 +48,5 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         """检查用户是否激活"""
         return user.is_active
 
-    def is_admin(self, user: User) -> bool:
-        """检查用户是否为管理员"""
-        return user.is_admin
-
 
 user = CRUDUser(User)

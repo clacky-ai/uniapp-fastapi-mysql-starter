@@ -1,5 +1,4 @@
-from .order import order, order_item
-from .product import category, product
+from .post import post
 from .user import user
 
-__all__ = ["user", "product", "category", "order", "order_item"]
+__all__ = ["user", "post"]

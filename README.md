@@ -1,265 +1,115 @@
-# 电商管理系统
+# 博客管理系统 Demo
 
-基于 FastAPI + MySQL + UniApp 构建的全栈电商管理系统脚手架。
+这是一个简化版的博客管理系统，用于演示前后端联调和数据库操作。
 
-## 🏗️ 项目架构
+## 项目结构
 
 ```
-├── backend/              # FastAPI 后端
-│   ├── app/
-│   │   ├── api/         # API 路由
-│   │   ├── core/        # 核心配置
-│   │   ├── crud/        # 数据库操作
-│   │   ├── db/          # 数据库连接
-│   │   ├── models/      # 数据模型
-│   │   └── schemas/     # Pydantic 模式
-│   └── requirements.txt
-├── frontend/            # UniApp 前端
-│   ├── src/
-│   │   ├── pages/      # 页面组件
-│   │   ├── utils/      # 工具函数
-│   │   └── static/     # 静态资源
-│   └── package.json
-├── database/           # 数据库脚本
-├── scripts/           # 部署脚本
-└── logs/             # 日志文件
+├── backend/          # FastAPI 后端服务
+├── frontend/         # Vue3 + UniApp 前端应用
+├── database/         # 数据库初始化脚本
+├── logs/            # 日志文件
+└── scripts/         # 启动脚本
 ```
 
-## 🚀 快速开始
+## 功能特性
 
-### 环境要求
+### 后端功能
+- ✅ 用户管理（注册、登录、用户信息）
+- ✅ 文章管理（CRUD操作、发布状态）
+- ✅ JWT认证和权限控制
+- ✅ 数据统计API
+- ✅ 管理后台界面
+- ✅ API文档自动生成
 
-- Python 3.8+
-- Node.js 16+
-- MySQL 8.0+
+### 前端功能
+- ✅ 响应式设计的首页
+- ✅ 文章列表浏览
+- ✅ 文章详情查看
+- ✅ 实时数据统计展示
+- ✅ 跨平台支持（H5、小程序）
 
-### 1. 克隆项目
+### 数据库
+- ✅ MySQL数据库
+- ✅ 用户表和文章表
+- ✅ 关联查询支持
+- ✅ 示例数据自动生成
 
-```bash
-git clone <repository-url>
-cd ecommerce-scaffold
-```
+## 快速开始
 
-### 2. 数据库配置
-
-创建数据库：
-```bash
-mysql -h 127.0.0.1 -u root -p -e "CREATE DATABASE ecommerce_db;"
-```
-
-导入初始数据：
-```bash
-mysql -h 127.0.0.1 -u root -p ecommerce_db < database/init.sql
-```
-
-### 3. 后端配置
-
+### 1. 启动后端服务
 ```bash
 cd backend
-
-# 创建虚拟环境
-python3 -m venv venv
-source venv/bin/activate
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 配置环境变量
-cp .env.example .env
-# 编辑 .env 文件，设置数据库连接信息
-
-# 启动后端服务
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 4. 前端配置
-
+### 2. 启动前端应用
 ```bash
 cd frontend
-
-# 安装依赖
-npm install
-
-# 启动开发服务器
 npm run dev:h5
 ```
 
-### 5. 一键启动（推荐）
-
-```bash
-# 启动所有服务
-./scripts/start.sh
-
-# 停止所有服务
-./scripts/stop.sh
-```
-
-## 📱 功能特性
-
-### 后端 (FastAPI)
-
-- ✅ RESTful API 设计
-- ✅ JWT 身份认证
-- ✅ 数据库 ORM (SQLAlchemy)
-- ✅ 数据验证 (Pydantic)
-- ✅ API 文档自动生成
-- ✅ 管理后台界面
-- ✅ CORS 跨域支持
-- ✅ 异步数据库操作
-
-### 前端 (UniApp)
-
-- ✅ Vue 3 + TypeScript
-- ✅ 响应式设计
-- ✅ 多端兼容 (H5/小程序/APP)
-- ✅ 统一的 API 请求封装
-- ✅ 组件化开发
-- ✅ 路由导航
-
-### 核心模块
-
-1. **用户管理**
-   - 用户注册/登录
-   - 用户信息管理
-   - 权限控制
-
-2. **商品管理**
-   - 商品 CRUD 操作
-   - 商品分类管理
-   - 商品搜索筛选
-
-3. **订单管理**
-   - 订单创建/查询
-   - 订单状态管理
-   - 订单统计
-
-## 🔗 访问地址
-
-启动服务后，可通过以下地址访问：
-
-- **前端应用**: http://localhost:5173
-- **后端API**: http://localhost:8000
+### 3. 访问地址
+- **前端应用**: http://localhost:5174/
 - **API文档**: http://localhost:8000/docs
-- **管理后台**: http://localhost:8000/admin
+- **管理后台**: http://localhost:8000/admin/
 
-## 📁 核心文件说明
+## 测试账户
 
-### 后端关键文件
+**预设管理员账户：**
+- 用户名：`admin`
+- 密码：`secret`
 
-- `backend/app/main.py` - FastAPI 应用入口
-- `backend/app/core/config.py` - 应用配置
-- `backend/app/db/database.py` - 数据库连接
-- `backend/app/models/` - 数据模型定义
-- `backend/app/api/v1/` - API 路由定义
+## API接口
 
-### 前端关键文件
-
-- `frontend/src/main.ts` - 应用入口
-- `frontend/src/pages.json` - 页面配置
-- `frontend/src/utils/request.ts` - API 请求封装
-- `frontend/src/pages/` - 页面组件
-
-## 🛠️ 开发指南
-
-### 添加新的 API 接口
-
-1. 在 `backend/app/models/` 中定义数据模型
-2. 在 `backend/app/schemas/` 中定义 Pydantic 模式  
-3. 在 `backend/app/crud/` 中实现数据库操作
-4. 在 `backend/app/api/v1/endpoints/` 中添加路由
-5. 在 `backend/app/api/v1/api.py` 中注册路由
-
-### 添加新的前端页面
-
-1. 在 `frontend/src/pages/` 中创建 Vue 组件
-2. 在 `frontend/src/pages.json` 中配置路由
-3. 在组件中使用 `api` 对象调用后端接口
-
-### 数据库迁移
-
-```bash
-cd backend
-# 生成迁移文件
-alembic revision --autogenerate -m "描述"
-# 执行迁移
-alembic upgrade head
+### 统计信息
+```
+GET /api/v1/stats/dashboard
 ```
 
-## 🧪 测试
-
-### 后端测试
-
-```bash
-cd backend
-pytest
+### 文章相关
+```
+GET /api/v1/posts/published  # 获取已发布文章
+GET /api/v1/posts/{id}       # 获取文章详情
+POST /api/v1/posts/          # 创建文章（需认证）
 ```
 
-### 前端测试
-
-```bash
-cd frontend
-npm run test
+### 用户相关
+```
+POST /api/v1/auth/login      # 用户登录
+POST /api/v1/users/          # 用户注册
+GET /api/v1/users/me         # 获取当前用户信息
 ```
 
-## 📦 部署
+## 数据库结构
 
-### Docker 部署
+### 用户表 (users)
+- id, username, email, password_hash, full_name, is_active, created_at, updated_at
 
-```bash
-# 构建镜像
-docker-compose build
+### 文章表 (posts)
+- id, title, content, author_id, is_published, created_at, updated_at
 
-# 启动服务
-docker-compose up -d
-```
+## 技术栈
 
-### 生产环境部署
+**后端：**
+- FastAPI + Python 3.12
+- SQLAlchemy ORM
+- MySQL数据库
+- SQLAdmin管理后台
+- JWT认证
 
-1. 修改 `backend/.env` 中的生产配置
-2. 构建前端生产版本：`npm run build:h5`
-3. 使用 Nginx 代理前端静态文件
-4. 使用 Gunicorn 运行 FastAPI 应用
+**前端：**
+- Vue 3 + TypeScript
+- UniApp框架
+- Vite构建工具
+- 响应式UI设计
 
-## 🔧 配置说明
+## 开发说明
 
-### 后端环境变量
+这是一个从复杂电商系统简化而来的博客demo，专注于：
+1. 展示基本的CRUD操作
+2. 演示前后端API联调
+3. 实现用户认证流程
+4. 提供管理后台功能
 
-```env
-# 数据库配置
-DATABASE_URL=mysql+pymysql://root:password@localhost/ecommerce_db
-
-# JWT配置
-SECRET_KEY=your-secret-key
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# 跨域配置
-CORS_ORIGINS=["http://localhost:5173"]
-```
-
-### 前端配置
-
-在 `frontend/src/utils/request.ts` 中修改 API 基础地址：
-
-```typescript
-const BASE_URL = 'http://your-api-domain.com'
-```
-
-## 🤝 贡献
-
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开 Pull Request
-
-## 📄 许可证
-
-本项目基于 [MIT 许可证](LICENSE) 开源。
-
-## 📞 支持
-
-如有问题或建议，请提交 [Issue](../../issues) 或联系开发团队。
-
----
-
-**Happy Coding! 🎉**
+适合作为学习参考或项目脚手架使用。

@@ -7,21 +7,27 @@
 			}
 		},
 		{
-			"path": "pages/products/index",
+			"path": "pages/posts/index",
 			"style": {
-				"navigationBarTitleText": "商品管理"
+				"navigationBarTitleText": "文章列表"
 			}
 		},
 		{
-			"path": "pages/products/form",
+			"path": "pages/posts/detail",
 			"style": {
-				"navigationBarTitleText": "商品表单"
+				"navigationBarTitleText": "文章详情"
+			}
+		},
+		{
+			"path": "pages/debug",
+			"style": {
+				"navigationBarTitleText": "调试页面"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "电商管理系统",
+		"navigationBarTitleText": "博客管理系统",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
@@ -36,8 +42,8 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/products/index",
-				"text": "商品"
+				"pagePath": "pages/posts/index",
+				"text": "文章"
 			}
 		]
 	},

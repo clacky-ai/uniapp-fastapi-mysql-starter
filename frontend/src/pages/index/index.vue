@@ -16,15 +16,15 @@
 		
 		<view class="stats-grid" v-else>
 			<view class="stat-card">
-				<view class="stat-icon">📦</view>
-				<view class="stat-number">{{ stats.total_products }}</view>
-				<text class="stat-label">总商品数</text>
+				<view class="stat-icon">📝</view>
+				<view class="stat-number">{{ stats.total_posts }}</view>
+				<text class="stat-label">文章总数</text>
 			</view>
 			
 			<view class="stat-card">
 				<view class="stat-icon">✅</view>
-				<view class="stat-number">{{ stats.active_products }}</view>
-				<text class="stat-label">激活商品</text>
+				<view class="stat-number">{{ stats.published_posts }}</view>
+				<text class="stat-label">已发布</text>
 			</view>
 			
 			<view class="stat-card">
@@ -34,9 +34,9 @@
 			</view>
 			
 			<view class="stat-card">
-				<view class="stat-icon">📋</view>
-				<view class="stat-number">{{ stats.total_orders }}</view>
-				<text class="stat-label">订单总数</text>
+				<view class="stat-icon">🔥</view>
+				<view class="stat-number">{{ stats.active_users }}</view>
+				<text class="stat-label">活跃用户</text>
 			</view>
 		</view>
 		
@@ -48,11 +48,12 @@
 		
 		<view class="actions">
 			<button class="action-btn" @click="loadData">刷新数据</button>
-			<button class="action-btn secondary" @click="navigateTo('/pages/products/index')">关于页面</button>
+			<button class="action-btn secondary" @click="navigateTo('/pages/posts/index')">查看文章</button>
+			<button class="action-btn debug" @click="navigateTo('/pages/debug')">调试API</button>
 		</view>
 		
 		<view class="footer">
-			<text class="footer-text">API: {{ baseUrl }}/api/v1/stats/dashboard</text>
+			<text class="footer-text">API: /api/v1/stats/dashboard (通过代理)</text>
 		</view>
 	</view>
 </template>
@@ -62,10 +63,10 @@ import { ref, onMounted } from 'vue'
 import { api } from '@/utils/request'
 
 interface StatsData {
-	total_products: number
-	active_products: number
+	total_posts: number
+	published_posts: number
 	total_users: number
-	total_orders: number
+	active_users: number
 	system_status: string
 	message: string
 }
@@ -73,15 +74,14 @@ interface StatsData {
 const loading = ref(true)
 const error = ref('')
 const stats = ref<StatsData>({
-	total_products: 0,
-	active_products: 0,
+	total_posts: 0,
+	published_posts: 0,
 	total_users: 0,
-	total_orders: 0,
+	active_users: 0,
 	system_status: 'unknown',
 	message: ''
 })
 const lastUpdate = ref('')
-const baseUrl = ''
 
 const loadData = async () => {
 	loading.value = true
@@ -242,12 +242,12 @@ onMounted(() => {
 
 .actions {
 	display: flex;
+	flex-direction: column;
 	gap: 20rpx;
 	margin-bottom: 40rpx;
 }
 
 .action-btn {
-	flex: 1;
 	background: white;
 	color: #667eea;
 	border: none;
@@ -259,6 +259,12 @@ onMounted(() => {
 
 .action-btn.secondary {
 	background: rgba(255, 255, 255, 0.2);
+	color: white;
+}
+
+.action-btn.debug {
+	background: rgba(255, 107, 107, 0.2);
+	border: 2rpx solid rgba(255, 107, 107, 0.3);
 	color: white;
 }
 

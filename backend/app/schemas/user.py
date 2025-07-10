@@ -29,7 +29,6 @@ class UserUpdate(BaseModel):
 class User(UserBase):
     """用户响应模型"""
     id: int
-    is_admin: bool
     created_at: datetime
     updated_at: datetime
 

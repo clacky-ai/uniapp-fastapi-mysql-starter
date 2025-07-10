@@ -1,5 +1,26 @@
 // API 请求工具类
-const BASE_URL = ''
+// 动态检测API基础URL
+function getBaseUrl(): string {
+  // 在uni-app环境中，如果是H5端且使用了代理，直接使用相对路径
+  if (typeof window !== 'undefined' && window.location) {
+    const { protocol, hostname, port } = window.location
+    
+    // 如果是外网访问（包含clackypaas.com域名），使用代理
+    if (hostname.includes('clackypaas.com')) {
+      return '' // 使用相对路径，通过vite代理
+    }
+    
+    // 本地开发环境
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return '' // 使用代理
+    }
+  }
+  
+  // 默认返回本地后端地址
+  return 'http://localhost:8000'
+}
+
+const BASE_URL = getBaseUrl()
 
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -23,7 +44,7 @@ export async function request<T = any>(
   
   try {
     const config: UniApp.RequestOptions = {
-      url: url,
+      url: BASE_URL + url,
       method: method as any,
       header: {
         'Content-Type': 'application/json',
@@ -66,34 +87,24 @@ export const api = {
     updateProfile: (data: any) => request('/api/v1/users/me', { method: 'PUT', data })
   },
   
-  // 产品相关
-  product: {
+  // 文章相关
+  posts: {
     list: (params?: { skip?: number; limit?: number }) => {
       const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
-      return request(`/api/v1/products/${query}`)
+      return request(`/api/v1/posts/${query}`)
     },
-    get: (id: number) => request(`/api/v1/products/${id}`),
-    create: (data: any) => request('/api/v1/products/', { method: 'POST', data }),
-    update: (id: number, data: any) => request(`/api/v1/products/${id}`, { method: 'PUT', data }),
-    delete: (id: number) => request(`/api/v1/products/${id}`, { method: 'DELETE' })
-  },
-  
-  // 分类相关
-  category: {
-    list: () => request('/api/v1/categories/'),
-    get: (id: number) => request(`/api/v1/categories/${id}`),
-    create: (data: any) => request('/api/v1/categories/', { method: 'POST', data }),
-    update: (id: number, data: any) => request(`/api/v1/categories/${id}`, { method: 'PUT', data }),
-    delete: (id: number) => request(`/api/v1/categories/${id}`, { method: 'DELETE' })
-  },
-  
-  // 订单相关
-  order: {
-    list: () => request('/api/v1/orders/'),
-    get: (id: number) => request(`/api/v1/orders/${id}`),
-    create: (data: any) => request('/api/v1/orders/', { method: 'POST', data }),
-    update: (id: number, data: any) => request(`/api/v1/orders/${id}`, { method: 'PUT', data }),
-    delete: (id: number) => request(`/api/v1/orders/${id}`, { method: 'DELETE' })
+    getPublished: (params?: { skip?: number; limit?: number }) => {
+      const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
+      return request(`/api/v1/posts/published${query}`)
+    },
+    getById: (id: number) => request(`/api/v1/posts/${id}`),
+    create: (data: any) => request('/api/v1/posts/', { method: 'POST', data }),
+    update: (id: number, data: any) => request(`/api/v1/posts/${id}`, { method: 'PUT', data }),
+    delete: (id: number) => request(`/api/v1/posts/${id}`, { method: 'DELETE' }),
+    getMy: (params?: { skip?: number; limit?: number }) => {
+      const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
+      return request(`/api/v1/posts/my${query}`)
+    }
   },
   
   // 统计相关
