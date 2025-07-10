@@ -1,215 +1,57 @@
 from fastapi import FastAPI
-from fastapi_admin.app import app as admin_app
-from fastapi_admin.enums import Method
-from fastapi_admin.file_upload import FileUpload
-from fastapi_admin.providers.login import UsernamePasswordProvider
-from fastapi_admin.resources import Action, Dropdown, Field, Link, Model
-from fastapi_admin.widgets import displays, filters, inputs
-from starlette.requests import Request
-from starlette.staticfiles import StaticFiles
+from sqladmin import Admin, ModelView
 
-from app.models import User, Product, Category, Order, OrderItem
+from app.db.database import engine
+from app.models.order import Order
+from app.models.product import Product
+from app.models.user import User
 
 
-def create_admin():
-    """创建管理后台"""
-    # 配置登录提供者
-    @admin_app.register
-    class LoginProvider(UsernamePasswordProvider):
-        async def login(
-            self,
-            username: str,
-            password: str,
-            remember_me: bool,
-            request: Request,
-        ) -> bool:
-            # 这里实现登录逻辑，暂时使用简单的硬编码验证
-            # 在实际项目中应该使用数据库验证
-            if username == "admin" and password == "admin123":
-                request.session.update({"user": username})
-                return True
-            return False
+class UserAdmin(ModelView, model=User):
+    """用户管理"""
+    column_list = [User.id, User.username, User.email, User.full_name, User.is_active, User.is_admin, User.created_at]
+    column_details_list = [User.id, User.username, User.email, User.full_name, User.is_active, User.is_admin, User.created_at, User.updated_at]
+    column_searchable_list = [User.username, User.email, User.full_name]
+    column_sortable_list = [User.id, User.username, User.email, User.created_at]
+    form_excluded_columns = [User.password_hash, User.created_at, User.updated_at]
+    name = "用户"
+    name_plural = "用户管理"
+    icon = "fa-solid fa-users"
 
-        async def is_authenticated(self, request: Request) -> bool:
-            return request.session.get("user") is not None
 
-        def get_admin_user(self, request: Request):
-            user = request.session.get("user")
-            if user:
-                return user
-            return None
+class ProductAdmin(ModelView, model=Product):
+    """商品管理"""
+    column_list = [Product.id, Product.name, Product.price, Product.stock_quantity, Product.category_id, Product.is_active, Product.created_at]
+    column_details_list = [Product.id, Product.name, Product.description, Product.price, Product.stock_quantity, Product.category_id, Product.image_url, Product.is_active, Product.created_at, Product.updated_at]
+    column_searchable_list = [Product.name, Product.description]
+    column_sortable_list = [Product.id, Product.name, Product.price, Product.stock_quantity, Product.created_at]
+    form_excluded_columns = [Product.created_at, Product.updated_at]
+    name = "商品"
+    name_plural = "商品管理"
+    icon = "fa-solid fa-box"
 
-        async def logout(self, request: Request):
-            request.session.clear()
 
-    # 用户管理
-    @admin_app.register
-    class UserResource(Model):
-        label = "用户管理"
-        model = User
-        icon = "fas fa-users"
-        page_pre_title = "用户管理"
-        page_title = "用户列表"
-        filters = [
-            filters.Search(name="username", label="用户名", search_mode="contains"),
-            filters.Search(name="email", label="邮箱", search_mode="contains"),
-            filters.Boolean(name="is_active", label="是否激活"),
-            filters.Boolean(name="is_admin", label="是否管理员"),
-        ]
-        fields = [
-            "id",
-            "username",
-            "email",
-            "full_name",
-            Field(
-                name="is_active",
-                label="激活状态",
-                display=displays.Boolean(),
-                input_=inputs.Switch(),
-            ),
-            Field(
-                name="is_admin",
-                label="管理员",
-                display=displays.Boolean(),
-                input_=inputs.Switch(),
-            ),
-            "created_at",
-            "updated_at",
-        ]
-
-    # 分类管理
-    @admin_app.register
-    class CategoryResource(Model):
-        label = "分类管理"
-        model = Category
-        icon = "fas fa-tags"
-        page_pre_title = "商品管理"
-        page_title = "分类列表"
-        filters = [
-            filters.Search(name="name", label="分类名称", search_mode="contains"),
-            filters.Boolean(name="is_active", label="是否激活"),
-        ]
-        fields = [
-            "id",
-            "name",
-            "description",
-            Field(
-                name="parent_id",
-                label="父分类",
-                input_=inputs.ForeignKey(Category, "name"),
-            ),
-            "sort_order",
-            Field(
-                name="is_active",
-                label="激活状态",
-                display=displays.Boolean(),
-                input_=inputs.Switch(),
-            ),
-            "created_at",
-            "updated_at",
-        ]
-
-    # 商品管理
-    @admin_app.register
-    class ProductResource(Model):
-        label = "商品管理"
-        model = Product
-        icon = "fas fa-boxes"
-        page_pre_title = "商品管理"
-        page_title = "商品列表"
-        filters = [
-            filters.Search(name="name", label="商品名称", search_mode="contains"),
-            filters.ForeignKey(name="category_id", label="分类", model=Category),
-            filters.Boolean(name="is_active", label="是否激活"),
-        ]
-        fields = [
-            "id",
-            "name",
-            Field(
-                name="description",
-                label="描述",
-                input_=inputs.TextArea(),
-            ),
-            Field(
-                name="price",
-                label="价格",
-                input_=inputs.Number(step=0.01),
-            ),
-            Field(
-                name="stock_quantity",
-                label="库存数量",
-                input_=inputs.Number(),
-            ),
-            Field(
-                name="category_id",
-                label="分类",
-                input_=inputs.ForeignKey(Category, "name"),
-            ),
-            Field(
-                name="image_url",
-                label="图片链接",
-                input_=inputs.URL(),
-            ),
-            Field(
-                name="is_active",
-                label="激活状态",
-                display=displays.Boolean(),
-                input_=inputs.Switch(),
-            ),
-            "created_at",
-            "updated_at",
-        ]
-
-    # 订单管理
-    @admin_app.register
-    class OrderResource(Model):
-        label = "订单管理"
-        model = Order
-        icon = "fas fa-shopping-cart"
-        page_pre_title = "订单管理"
-        page_title = "订单列表"
-        filters = [
-            filters.ForeignKey(name="user_id", label="用户", model=User),
-            filters.Enum(name="status", label="订单状态", enum=Order.status.property.columns[0].type),
-        ]
-        fields = [
-            "id",
-            Field(
-                name="user_id",
-                label="用户",
-                input_=inputs.ForeignKey(User, "username"),
-            ),
-            Field(
-                name="total_amount",
-                label="总金额",
-                input_=inputs.Number(step=0.01),
-            ),
-            Field(
-                name="status",
-                label="订单状态",
-                input_=inputs.Enum(Order.status.property.columns[0].type),
-            ),
-            Field(
-                name="shipping_address",
-                label="收货地址",
-                input_=inputs.TextArea(),
-            ),
-            "created_at",
-            "updated_at",
-        ]
-
-    return admin_app
+class OrderAdmin(ModelView, model=Order):
+    """订单管理"""
+    column_list = [Order.id, Order.user_id, Order.total_amount, Order.status, Order.created_at]
+    column_details_list = [Order.id, Order.user_id, Order.total_amount, Order.status, Order.shipping_address, Order.created_at, Order.updated_at]
+    column_searchable_list = [Order.status, Order.shipping_address]
+    column_sortable_list = [Order.id, Order.total_amount, Order.created_at]
+    form_excluded_columns = [Order.created_at, Order.updated_at]
+    name = "订单"
+    name_plural = "订单管理"
+    icon = "fa-solid fa-shopping-cart"
 
 
 def setup_admin(app: FastAPI):
-    """配置管理后台"""
-    # 创建管理后台
-    admin = create_admin()
-    
-    # 挂载静态文件
-    app.mount("/static", StaticFiles(directory="static"), name="static")
-    
-    # 挂载管理后台
-    app.mount("/admin", admin)
-    
-    return app
+    """设置管理后台"""
+
+    # 创建 SQLAdmin 实例
+    admin = Admin(app, engine, title="电商管理后台")
+
+    # 添加模型视图
+    admin.add_view(UserAdmin)
+    admin.add_view(ProductAdmin)
+    admin.add_view(OrderAdmin)
+
+    return admin

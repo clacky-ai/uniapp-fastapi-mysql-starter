@@ -1,10 +1,12 @@
 from typing import Any, List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+
 from app.api.deps import get_current_active_user, get_current_admin_user, get_db
 from app.crud import order
-from app.models.user import User
 from app.models.order import OrderStatus
+from app.models.user import User
 from app.schemas.order import Order, OrderCreate, OrderUpdate
 
 router = APIRouter()
@@ -55,11 +57,11 @@ def read_order(
     order_obj = order.get(db, id=order_id)
     if not order_obj:
         raise HTTPException(status_code=404, detail="订单不存在")
-    
+
     # 检查权限：用户只能查看自己的订单或管理员可以查看所有订单
     if order_obj.user_id != current_user.id and not current_user.is_admin:
         raise HTTPException(status_code=403, detail="权限不足")
-    
+
     return order_obj
 
 
@@ -75,11 +77,11 @@ def update_order(
     order_obj = order.get(db, id=order_id)
     if not order_obj:
         raise HTTPException(status_code=404, detail="订单不存在")
-    
+
     # 检查权限：用户只能更新自己的订单或管理员可以更新所有订单
     if order_obj.user_id != current_user.id and not current_user.is_admin:
         raise HTTPException(status_code=403, detail="权限不足")
-    
+
     order_obj = order.update(db, db_obj=order_obj, obj_in=order_in)
     return order_obj
 

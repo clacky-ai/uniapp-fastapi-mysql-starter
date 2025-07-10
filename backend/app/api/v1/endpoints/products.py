@@ -1,7 +1,9 @@
 from typing import Any, List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from app.api.deps import get_current_active_user, get_current_admin_user, get_db
+
+from app.api.deps import get_current_admin_user, get_db
 from app.crud import product
 from app.models.user import User
 from app.schemas.product import Product, ProductCreate, ProductUpdate

@@ -1,10 +1,13 @@
-from pydantic import BaseModel
-from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
+from typing import List, Optional
+
+from pydantic import BaseModel
+
 from app.models.order import OrderStatus
-from .user import User
+
 from .product import Product
+from .user import User
 
 
 class OrderItemBase(BaseModel):
@@ -25,7 +28,7 @@ class OrderItem(OrderItemBase):
     order_id: int
     product: Optional[Product] = None
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -57,6 +60,6 @@ class Order(OrderBase):
     items: Optional[List[OrderItem]] = None
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True

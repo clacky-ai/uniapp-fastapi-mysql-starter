@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
+
+from app.admin import setup_admin
 from app.api.v1.api import api_router
+from app.core.config import settings
 
 # 创建FastAPI应用实例
 app = FastAPI(
@@ -20,6 +22,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 设置管理后台
+setup_admin(app)
+
 # 包含API路由
 app.include_router(api_router, prefix="/api/v1")
 
@@ -30,7 +35,8 @@ async def root():
     return {
         "message": "欢迎使用小程序开发脚手架API",
         "version": settings.APP_VERSION,
-        "docs": "/docs"
+        "docs": "/docs",
+        "admin": "/admin"
     }
 
 

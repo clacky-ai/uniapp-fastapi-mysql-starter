@@ -1,14 +1,15 @@
-from sqlalchemy import Column, Integer, String, Text, DECIMAL, Boolean, DateTime, ForeignKey
+from sqlalchemy import DECIMAL, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
 from app.db.database import Base
 
 
 class Category(Base):
     """商品分类模型"""
-    
+
     __tablename__ = "categories"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
     description = Column(Text)
@@ -17,7 +18,7 @@ class Category(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-    
+
     # 关系
     parent = relationship("Category", remote_side=[id])
     products = relationship("Product", back_populates="category")
@@ -25,9 +26,9 @@ class Category(Base):
 
 class Product(Base):
     """商品模型"""
-    
+
     __tablename__ = "products"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     description = Column(Text)
@@ -38,6 +39,6 @@ class Product(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-    
+
     # 关系
     category = relationship("Category", back_populates="products")

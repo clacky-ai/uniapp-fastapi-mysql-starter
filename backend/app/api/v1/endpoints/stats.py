@@ -1,11 +1,13 @@
 from typing import Any
+
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from app.api.deps import get_db
+from app.models.order import Order
 from app.models.product import Product
 from app.models.user import User
-from app.models.order import Order
 
 router = APIRouter()
 
@@ -15,16 +17,16 @@ def get_dashboard_stats(db: Session = Depends(get_db)) -> Any:
     """获取系统统计数据"""
     # 统计商品数量
     product_count = db.query(func.count(Product.id)).scalar() or 0
-    
+
     # 统计用户数量
     user_count = db.query(func.count(User.id)).scalar() or 0
-    
+
     # 统计订单数量
     order_count = db.query(func.count(Order.id)).scalar() or 0
-    
+
     # 统计激活商品数量
-    active_product_count = db.query(func.count(Product.id)).filter(Product.is_active == True).scalar() or 0
-    
+    active_product_count = db.query(func.count(Product.id)).filter(Product.is_active).scalar() or 0
+
     return {
         "total_products": product_count,
         "active_products": active_product_count,

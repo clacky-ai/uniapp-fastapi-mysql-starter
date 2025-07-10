@@ -1,6 +1,6 @@
+from .order import Order, OrderCreate, OrderItem, OrderItemCreate, OrderUpdate
+from .product import Category, CategoryCreate, CategoryUpdate, Product, ProductCreate, ProductUpdate
 from .user import User, UserCreate, UserUpdate
-from .product import Product, ProductCreate, ProductUpdate, Category, CategoryCreate, CategoryUpdate
-from .order import Order, OrderCreate, OrderUpdate, OrderItem, OrderItemCreate
 
 __all__ = [
     "User", "UserCreate", "UserUpdate",

@@ -15,7 +15,7 @@ dependencies = [
     "python-jose",
     "passlib",
     "python-multipart",
-    "fastapi-admin",
+    "sqladmin",
 ]
 
 [tool.ruff]

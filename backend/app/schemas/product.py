@@ -1,7 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
+
+from pydantic import BaseModel
 
 
 class CategoryBase(BaseModel):
@@ -32,7 +33,7 @@ class Category(CategoryBase):
     id: int
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -70,6 +71,6 @@ class Product(ProductBase):
     category: Optional[Category] = None
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True

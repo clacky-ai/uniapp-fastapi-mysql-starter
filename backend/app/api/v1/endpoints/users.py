@@ -1,10 +1,13 @@
 from typing import Any, List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from app.api.deps import get_current_active_user, get_current_admin_user, get_db
 from app.crud import user
 from app.models.user import User
-from app.schemas.user import User as UserSchema, UserCreate, UserUpdate
+from app.schemas.user import User as UserSchema
+from app.schemas.user import UserCreate, UserUpdate
 
 router = APIRouter()
 
