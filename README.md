@@ -1,115 +1,319 @@
-# 博客管理系统 Demo
+# UniApp FastAPI MySQL Starter
 
-这是一个简化版的博客管理系统，用于演示前后端联调和数据库操作。
+A full-stack system template built with FastAPI backend, UniApp frontend, and MySQL database. This project serves as a comprehensive starter template for building modern web applications with cross-platform support.
 
-## 项目结构
+## 🏗️ Project Structure
 
 ```
-├── backend/          # FastAPI 后端服务
-├── frontend/         # Vue3 + UniApp 前端应用
-├── database/         # 数据库初始化脚本
-├── logs/            # 日志文件
-└── scripts/         # 启动脚本
+├── backend/              # FastAPI backend service
+│   ├── app/
+│   │   ├── api/         # API routes and endpoints
+│   │   ├── core/        # Core configurations and security
+│   │   ├── crud/        # Database CRUD operations
+│   │   ├── db/          # Database connection and setup
+│   │   ├── models/      # SQLAlchemy data models
+│   │   ├── schemas/     # Pydantic schemas for validation
+│   │   └── main.py      # FastAPI application entry point
+│   ├── requirements.txt # Python dependencies
+│   └── .env            # Environment variables
+├── frontend/            # UniApp Vue3 frontend application
+│   ├── src/
+│   │   ├── pages/      # Application pages
+│   │   ├── utils/      # Utility functions
+│   │   └── main.ts     # Application entry point
+│   ├── package.json    # Node.js dependencies
+│   └── vite.config.ts  # Vite configuration
+├── database/           # Database initialization scripts
+│   └── init.sql       # Database schema and sample data
+├── logs/              # Application logs
+└── scripts/           # Startup and utility scripts
 ```
 
-## 功能特性
+## ✨ Features
 
-### 后端功能
-- ✅ 用户管理（注册、登录、用户信息）
-- ✅ 文章管理（CRUD操作、发布状态）
-- ✅ JWT认证和权限控制
-- ✅ 数据统计API
-- ✅ 管理后台界面
-- ✅ API文档自动生成
+### Backend Features
+- ✅ **User Management**: Registration, authentication, and user profiles
+- ✅ **Post Management**: Full CRUD operations for blog posts
+- ✅ **JWT Authentication**: Secure token-based authentication
+- ✅ **Permission Control**: Role-based access control
+- ✅ **Statistics API**: Dashboard metrics and analytics
+- ✅ **Admin Interface**: Built-in SQLAdmin management panel
+- ✅ **API Documentation**: Auto-generated OpenAPI/Swagger docs
+- ✅ **Database ORM**: SQLAlchemy with async support
 
-### 前端功能
-- ✅ 响应式设计的首页
-- ✅ 文章列表浏览
-- ✅ 文章详情查看
-- ✅ 实时数据统计展示
-- ✅ 跨平台支持（H5、小程序）
+### Frontend Features
+- ✅ **Responsive Design**: Modern UI with mobile-first approach
+- ✅ **Post Browsing**: Article listing and detailed views
+- ✅ **Real-time Stats**: Dynamic dashboard with live data
+- ✅ **Cross-platform**: Supports H5, WeChat Mini Program, and more
+- ✅ **TypeScript**: Full type safety throughout the application
+- ✅ **Vue 3 Composition API**: Modern Vue.js development patterns
 
-### 数据库
-- ✅ MySQL数据库
-- ✅ 用户表和文章表
-- ✅ 关联查询支持
-- ✅ 示例数据自动生成
+### Database Features
+- ✅ **MySQL Integration**: Robust relational database support
+- ✅ **Schema Management**: Well-structured user and post tables
+- ✅ **Data Relationships**: Foreign key constraints and indexes
+- ✅ **Sample Data**: Pre-populated demo content for quick start
 
-## 快速开始
+## 🚀 Quick Start
 
-### 1. 启动后端服务
+### Prerequisites
+- Python 3.12+
+- Node.js 20+
+- MySQL 8.0+
+
+### 1. Database Setup
+```bash
+# Create database and tables
+mysql -h 127.0.0.1 -u root -p < database/init.sql
+```
+
+### 2. Backend Setup
 ```bash
 cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the FastAPI server
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 2. 启动前端应用
+### 3. Frontend Setup
 ```bash
 cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server for H5
 npm run dev:h5
+
+# Or for WeChat Mini Program
+npm run dev:mp-weixin
 ```
 
-### 3. 访问地址
-- **前端应用**: http://localhost:5174/
-- **API文档**: http://localhost:8000/docs
-- **管理后台**: http://localhost:8000/admin/
+### 4. Access URLs
+- **Frontend Application**: http://localhost:5174/
+- **API Documentation**: http://localhost:8000/docs
+- **Admin Panel**: http://localhost:8000/admin/
+- **Alternative API Docs**: http://localhost:8000/redoc
 
-## 测试账户
+## 🔐 Default Credentials
 
-**预设管理员账户：**
-- 用户名：`admin`
-- 密码：`secret`
+**Admin Account:**
+- Username: `admin`
+- Password: `secret`
 
-## API接口
+**Test Users:**
+- alice / secret
+- bob / secret  
+- charlie / secret
 
-### 统计信息
+## 📚 API Endpoints
+
+### Authentication
 ```
-GET /api/v1/stats/dashboard
-```
-
-### 文章相关
-```
-GET /api/v1/posts/published  # 获取已发布文章
-GET /api/v1/posts/{id}       # 获取文章详情
-POST /api/v1/posts/          # 创建文章（需认证）
-```
-
-### 用户相关
-```
-POST /api/v1/auth/login      # 用户登录
-POST /api/v1/users/          # 用户注册
-GET /api/v1/users/me         # 获取当前用户信息
+POST /api/v1/auth/login          # User login
+POST /api/v1/users/              # User registration
+GET  /api/v1/users/me            # Get current user info
 ```
 
-## 数据库结构
+### Posts Management
+```
+GET  /api/v1/posts/published     # Get published posts
+GET  /api/v1/posts/{id}          # Get post details
+POST /api/v1/posts/              # Create post (authenticated)
+PUT  /api/v1/posts/{id}          # Update post (authenticated)
+DELETE /api/v1/posts/{id}        # Delete post (authenticated)
+```
 
-### 用户表 (users)
-- id, username, email, password_hash, full_name, is_active, created_at, updated_at
+### Statistics
+```
+GET  /api/v1/stats/dashboard     # Get dashboard statistics
+GET  /api/v1/stats/overview      # Get application overview
+```
 
-### 文章表 (posts)
-- id, title, content, author_id, is_published, created_at, updated_at
+## 🗄️ Database Schema
 
-## 技术栈
+### Users Table
+| Field | Type | Description |
+|-------|------|-------------|
+| id | INT | Primary key |
+| username | VARCHAR(50) | Unique username |
+| email | VARCHAR(100) | User email address |
+| password_hash | VARCHAR(255) | Hashed password |
+| full_name | VARCHAR(100) | Display name |
+| is_active | BOOLEAN | Account status |
+| created_at | DATETIME | Creation timestamp |
+| updated_at | DATETIME | Last update timestamp |
 
-**后端：**
-- FastAPI + Python 3.12
-- SQLAlchemy ORM
-- MySQL数据库
-- SQLAdmin管理后台
-- JWT认证
+### Posts Table
+| Field | Type | Description |
+|-------|------|-------------|
+| id | INT | Primary key |
+| title | VARCHAR(200) | Post title |
+| content | TEXT | Post content |
+| author_id | INT | Foreign key to users |
+| is_published | BOOLEAN | Publication status |
+| created_at | DATETIME | Creation timestamp |
+| updated_at | DATETIME | Last update timestamp |
 
-**前端：**
-- Vue 3 + TypeScript
-- UniApp框架
-- Vite构建工具
-- 响应式UI设计
+## 🛠️ Technology Stack
 
-## 开发说明
+### Backend
+- **Framework**: FastAPI 0.116.0
+- **Database**: MySQL 8.0 with SQLAlchemy ORM
+- **Authentication**: JWT with python-jose
+- **Password**: bcrypt hashing
+- **Admin**: SQLAdmin interface
+- **Validation**: Pydantic v2
+- **Environment**: python-dotenv
 
-这是一个从复杂电商系统简化而来的博客demo，专注于：
-1. 展示基本的CRUD操作
-2. 演示前后端API联调
-3. 实现用户认证流程
-4. 提供管理后台功能
+### Frontend
+- **Framework**: Vue 3.4.21 with Composition API
+- **Build Tool**: Vite 5.2.8
+- **Language**: TypeScript 4.9.4
+- **UI Framework**: UniApp 3.0
+- **Cross-platform**: H5, WeChat Mini Program, Alipay Mini Program
+- **HTTP Client**: Axios with request interceptors
 
-适合作为学习参考或项目脚手架使用。
+### Development & Deployment
+- **Code Quality**: ESLint, Ruff formatter
+- **Type Checking**: TypeScript, Vue TSC
+- **Environment**: Docker-ready configuration
+- **Logging**: Structured logging with file rotation
+
+## 🔧 Development Commands
+
+### Backend
+```bash
+cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run with hot reload
+uvicorn app.main:app --reload
+
+# Format code with Ruff
+ruff format .
+
+# Lint code
+ruff check .
+```
+
+### Frontend
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Development (H5)
+npm run dev:h5
+
+# Development (WeChat Mini Program)
+npm run dev:mp-weixin
+
+# Build for production
+npm run build
+
+# Type checking
+npm run type-check
+
+# Lint code
+npm run lint
+
+# Lint and fix
+npm run lint:fix
+```
+
+## 🌟 Key Features Explained
+
+### Cross-Platform Support
+The UniApp framework enables deployment to multiple platforms:
+- **H5**: Web browsers and mobile web
+- **WeChat Mini Program**: Native WeChat integration
+- **Alipay Mini Program**: Alipay ecosystem support
+- **Mobile Apps**: Android and iOS with uni-app build
+
+### API-First Design
+- RESTful API architecture
+- OpenAPI 3.0 specification
+- Automatic documentation generation
+- Request/response validation
+- Error handling with proper HTTP status codes
+
+### Security Implementation
+- JWT token-based authentication
+- Password hashing with bcrypt
+- CORS configuration for cross-origin requests
+- SQL injection prevention with SQLAlchemy ORM
+- Input validation with Pydantic schemas
+
+## 📖 Usage Examples
+
+### Creating a New Post
+```javascript
+// Frontend API call
+const createPost = async (postData) => {
+  const response = await uni.request({
+    url: 'http://localhost:8000/api/v1/posts/',
+    method: 'POST',
+    header: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    data: postData
+  });
+  return response.data;
+};
+```
+
+### User Authentication
+```python
+# Backend authentication
+from app.core.security import verify_password, create_access_token
+
+def authenticate_user(username: str, password: str):
+    user = get_user_by_username(username)
+    if not user or not verify_password(password, user.password_hash):
+        return False
+    return user
+
+# Generate JWT token
+access_token = create_access_token(data={"sub": user.username})
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [API documentation](http://localhost:8000/docs) when running the backend
+2. Review the console logs in the `logs/` directory
+3. Ensure all dependencies are properly installed
+4. Verify database connection settings in `backend/.env`
+
+## 🔄 Recent Updates
+
+- ✅ Fixed all Ruff formatting issues
+- ✅ Updated repository to git@github.com:clacky-ai/uniapp-fastapi-mysql-starter.git
+- ✅ Enhanced project documentation
+- ✅ Improved code structure and organization
+
+---
+
+**Made with ❤️ using FastAPI, Vue 3, and UniApp**
