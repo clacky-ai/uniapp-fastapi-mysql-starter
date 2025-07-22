@@ -1,9 +1,51 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from sqladmin import Admin, ModelView
+from sqladmin.authentication import AuthenticationBackend
+from starlette.responses import RedirectResponse
 
-from app.db.database import engine
-from app.models.post import Post
+from app.core.config import settings
+from app.crud.user import user
+from app.db.database import engine, get_db
 from app.models.user import User
+
+
+class AdminAuthBackend(AuthenticationBackend):
+    """管理后台认证后端"""
+    
+    async def login(self, request: Request) -> bool:
+        """登录验证"""
+        # 从表单数据获取用户名和密码
+        form = await request.form()
+        username = form.get("username")
+        password = form.get("password")
+        
+        if not username or not password:
+            return False
+            
+        db = next(get_db())
+        try:
+            # 验证用户
+            auth_user = user.authenticate(db, username=str(username), password=str(password))
+            if auth_user and user.is_active(auth_user):
+                # 将用户ID存储在session中
+                request.session["user_id"] = auth_user.id
+                request.session["username"] = auth_user.username
+                return True
+            return False
+        except Exception as e:
+            print(f"Login error: {e}")
+            return False
+        finally:
+            db.close()
+    
+    async def logout(self, request: Request) -> bool:
+        """登出"""
+        request.session.clear()
+        return True
+    
+    async def authenticate(self, request: Request) -> bool:
+        """认证检查"""
+        return "user_id" in request.session
 
 
 class UserAdmin(ModelView, model=User):
@@ -34,35 +76,21 @@ class UserAdmin(ModelView, model=User):
     icon = "fa-solid fa-users"
 
 
-class PostAdmin(ModelView, model=Post):
-    """文章管理"""
-
-    column_list = [Post.id, Post.title, Post.author_id, Post.is_published, Post.created_at]
-    column_details_list = [
-        Post.id,
-        Post.title,
-        Post.content,
-        Post.author_id,
-        Post.is_published,
-        Post.created_at,
-        Post.updated_at,
-    ]
-    column_searchable_list = [Post.title, Post.content]
-    column_sortable_list = [Post.id, Post.title, Post.created_at]
-    form_excluded_columns = [Post.created_at, Post.updated_at]
-    name = "文章"
-    name_plural = "文章管理"
-    icon = "fa-solid fa-newspaper"
-
-
 def setup_admin(app: FastAPI):
     """设置管理后台"""
 
+    # 创建认证后端
+    auth_backend = AdminAuthBackend(secret_key=settings.SECRET_KEY)
+    
     # 创建 SQLAdmin 实例
-    admin = Admin(app, engine, title="博客管理系统")
+    admin = Admin(
+        app, 
+        engine, 
+        title="用户管理系统",
+        authentication_backend=auth_backend
+    )
 
     # 添加模型视图
     admin.add_view(UserAdmin)
-    admin.add_view(PostAdmin)
 
     return admin

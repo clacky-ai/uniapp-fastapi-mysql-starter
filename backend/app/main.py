@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from starlette.middleware.sessions import SessionMiddleware
 
 from app.admin import setup_admin
 from app.api.v1.api import api_router
@@ -12,6 +14,9 @@ app = FastAPI(
     debug=settings.DEBUG,
     description="小程序开发脚手架后端API服务",
 )
+
+# 添加Session中间件（必须在admin设置之前）
+app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 
 # 配置CORS
 app.add_middleware(
@@ -31,13 +36,8 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
-    """根路径"""
-    return {
-        "message": "欢迎使用小程序开发脚手架API",
-        "version": settings.APP_VERSION,
-        "docs": "/docs",
-        "admin": "/admin",
-    }
+    """根路径重定向到admin后台"""
+    return RedirectResponse(url="/admin", status_code=302)
 
 
 @app.get("/health")

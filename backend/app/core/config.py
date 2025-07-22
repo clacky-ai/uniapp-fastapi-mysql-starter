@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     DB_PORT: int = Field(default=3306, description="数据库端口")
     DB_USER: str = Field(default="root", description="数据库用户名")
     DB_PASSWORD: str = Field(description="数据库密码")
-    DB_NAME: str = Field(default="blog_demo", description="数据库名称")
+    DB_NAME: str = Field(default="user_demo", description="数据库名称")
 
     @computed_field
     @property

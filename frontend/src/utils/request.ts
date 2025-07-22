@@ -87,25 +87,7 @@ export const api = {
     updateProfile: (data: any) => request('/api/v1/users/me', { method: 'PUT', data })
   },
   
-  // 文章相关
-  posts: {
-    list: (params?: { skip?: number; limit?: number }) => {
-      const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
-      return request(`/api/v1/posts/${query}`)
-    },
-    getPublished: (params?: { skip?: number; limit?: number }) => {
-      const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
-      return request(`/api/v1/posts/published${query}`)
-    },
-    getById: (id: number) => request(`/api/v1/posts/${id}`),
-    create: (data: any) => request('/api/v1/posts/', { method: 'POST', data }),
-    update: (id: number, data: any) => request(`/api/v1/posts/${id}`, { method: 'PUT', data }),
-    delete: (id: number) => request(`/api/v1/posts/${id}`, { method: 'DELETE' }),
-    getMy: (params?: { skip?: number; limit?: number }) => {
-      const query = params ? `?skip=${params.skip || 0}&limit=${params.limit || 10}` : ''
-      return request(`/api/v1/posts/my${query}`)
-    }
-  },
+
   
   // 统计相关
   stats: {

@@ -6,18 +6,7 @@
 				"navigationBarTitleText": "首页"
 			}
 		},
-		{
-			"path": "pages/posts/index",
-			"style": {
-				"navigationBarTitleText": "文章列表"
-			}
-		},
-		{
-			"path": "pages/posts/detail",
-			"style": {
-				"navigationBarTitleText": "文章详情"
-			}
-		},
+
 		{
 			"path": "pages/debug",
 			"style": {
@@ -27,7 +16,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "博客管理系统",
+		"navigationBarTitleText": "用户管理系统",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
@@ -40,10 +29,6 @@
 			{
 				"pagePath": "pages/index/index",
 				"text": "首页"
-			},
-			{
-				"pagePath": "pages/posts/index",
-				"text": "文章"
 			}
 		]
 	},
