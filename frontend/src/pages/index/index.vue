@@ -15,17 +15,7 @@
 		</view>
 		
 		<view class="stats-grid" v-else>
-			<view class="stat-card">
-				<view class="stat-icon">📝</view>
-				<view class="stat-number">{{ stats.total_posts }}</view>
-				<text class="stat-label">文章总数</text>
-			</view>
-			
-			<view class="stat-card">
-				<view class="stat-icon">✅</view>
-				<view class="stat-number">{{ stats.published_posts }}</view>
-				<text class="stat-label">已发布</text>
-			</view>
+
 			
 			<view class="stat-card">
 				<view class="stat-icon">👥</view>
@@ -48,7 +38,7 @@
 		
 		<view class="actions">
 			<button class="action-btn" @click="loadData">刷新数据</button>
-			<button class="action-btn secondary" @click="navigateTo('/pages/posts/index')">查看文章</button>
+
 			<button class="action-btn debug" @click="navigateTo('/pages/debug')">调试API</button>
 		</view>
 		
@@ -63,8 +53,6 @@ import { ref, onMounted } from 'vue'
 import { api } from '@/utils/request'
 
 interface StatsData {
-	total_posts: number
-	published_posts: number
 	total_users: number
 	active_users: number
 	system_status: string
@@ -74,8 +62,6 @@ interface StatsData {
 const loading = ref(true)
 const error = ref('')
 const stats = ref<StatsData>({
-	total_posts: 0,
-	published_posts: 0,
 	total_users: 0,
 	active_users: 0,
 	system_status: 'unknown',

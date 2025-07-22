@@ -1,6 +1,6 @@
 # UniApp FastAPI MySQL Starter
 
-A full-stack system template built with FastAPI backend, UniApp frontend, and MySQL database. This project serves as a comprehensive starter template for building modern web applications with cross-platform support.
+A lightweight user management system built with FastAPI backend, UniApp frontend, and MySQL database. This project provides essential user authentication and management features for modern web applications with cross-platform support.
 
 ## 🏗️ Project Structure
 
@@ -33,7 +33,7 @@ A full-stack system template built with FastAPI backend, UniApp frontend, and My
 
 ### Backend Features
 - ✅ **User Management**: Registration, authentication, and user profiles
-- ✅ **Post Management**: Full CRUD operations for blog posts
+
 - ✅ **JWT Authentication**: Secure token-based authentication
 - ✅ **Permission Control**: Role-based access control
 - ✅ **Statistics API**: Dashboard metrics and analytics
@@ -43,7 +43,7 @@ A full-stack system template built with FastAPI backend, UniApp frontend, and My
 
 ### Frontend Features
 - ✅ **Responsive Design**: Modern UI with mobile-first approach
-- ✅ **Post Browsing**: Article listing and detailed views
+
 - ✅ **Real-time Stats**: Dynamic dashboard with live data
 - ✅ **Cross-platform**: Supports H5, WeChat Mini Program, and more
 - ✅ **TypeScript**: Full type safety throughout the application
@@ -51,9 +51,9 @@ A full-stack system template built with FastAPI backend, UniApp frontend, and My
 
 ### Database Features
 - ✅ **MySQL Integration**: Robust relational database support
-- ✅ **Schema Management**: Well-structured user and post tables
-- ✅ **Data Relationships**: Foreign key constraints and indexes
-- ✅ **Sample Data**: Pre-populated demo content for quick start
+- ✅ **Schema Management**: Well-structured user management tables
+- ✅ **Data Relationships**: Proper indexing and constraints
+- ✅ **Sample Data**: Pre-populated demo users for quick start
 
 ## 🚀 Quick Start
 
@@ -119,14 +119,7 @@ POST /api/v1/users/              # User registration
 GET  /api/v1/users/me            # Get current user info
 ```
 
-### Posts Management
-```
-GET  /api/v1/posts/published     # Get published posts
-GET  /api/v1/posts/{id}          # Get post details
-POST /api/v1/posts/              # Create post (authenticated)
-PUT  /api/v1/posts/{id}          # Update post (authenticated)
-DELETE /api/v1/posts/{id}        # Delete post (authenticated)
-```
+
 
 ### Statistics
 ```
@@ -148,16 +141,7 @@ GET  /api/v1/stats/overview      # Get application overview
 | created_at | DATETIME | Creation timestamp |
 | updated_at | DATETIME | Last update timestamp |
 
-### Posts Table
-| Field | Type | Description |
-|-------|------|-------------|
-| id | INT | Primary key |
-| title | VARCHAR(200) | Post title |
-| content | TEXT | Post content |
-| author_id | INT | Foreign key to users |
-| is_published | BOOLEAN | Publication status |
-| created_at | DATETIME | Creation timestamp |
-| updated_at | DATETIME | Last update timestamp |
+
 
 ## 🛠️ Technology Stack
 
@@ -254,22 +238,7 @@ The UniApp framework enables deployment to multiple platforms:
 
 ## 📖 Usage Examples
 
-### Creating a New Post
-```javascript
-// Frontend API call
-const createPost = async (postData) => {
-  const response = await uni.request({
-    url: 'http://localhost:8000/api/v1/posts/',
-    method: 'POST',
-    header: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    data: postData
-  });
-  return response.data;
-};
-```
+
 
 ### User Authentication
 ```python
