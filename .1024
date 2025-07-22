@@ -5,7 +5,7 @@ run_command:
 # Command to install or update dependencies, will execute each time a new thread created to ensure dependencies up-to-date
 dependency_command: '(cd backend && pip install -r requirements.txt); (cd frontend && npm install)'
 linter_config:
-  - config_path: 'backend/pyproject.toml'
+  - config_path: 'backend/ruff.toml'
     type: 'ruff'
     language: 'python'
   - config_path: 'frontend/.eslintrc.js'
