@@ -80,3 +80,9 @@ pids
 # Temporary files
 tmp/
 temp/
+
+# UniApp specific
+unpackage/
+.hbuilderx/
+src/pages.json.bak
+*.hbuilderx
